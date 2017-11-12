@@ -9,14 +9,16 @@ const app = express();
 
 app.use(morgan('dev'));
 
-app.get('/country/:phoneNumber', function(req, res){
-    var pn = new PhoneNumber(req.params.phoneNumber);
+app.get('/country', function(req, res){
+    var temp=parseInt(req.query.phoneNumber);//to only pass integer value
+    var pn = new PhoneNumber("+"+temp);
     if(pn.a.valid){
          var countryCode="+"+PhoneNumber.getCountryCodeForRegionCode(pn.a.regionCode);
-         console.log("country code is : +"+countryCode);
+        //  console.log("country code is : "+countryCode);
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             res.json({"country":countryCode}) 
+            
     }
     else{
         res.statusCode = 400;
