@@ -1,27 +1,22 @@
-const express = require('express'),
+const express = require('express');
 http = require('http');
 const morgan = require('morgan');
 var PhoneNumber = require( 'awesome-phonenumber' );
-const bodyParser = require('body-parser');
-
 
 const hostname = 'localhost';
 const port = 3000;
 const app = express();
 
-// app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 app.get('/country/:phoneNumber', function(req, res){
-    // res.end("hello in get api");
     var pn = new PhoneNumber(req.params.phoneNumber);
     if(pn.a.valid){
          var countryCode="+"+PhoneNumber.getCountryCodeForRegionCode(pn.a.regionCode);
          console.log("country code is : +"+countryCode);
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json({"country":countryCode})
-        
+            res.json({"country":countryCode}) 
     }
     else{
         res.statusCode = 400;
